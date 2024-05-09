@@ -19,11 +19,11 @@ import java.io.FileOutputStream;
  */
 public class PdfUtils {
 
-    public static String addPageNum (String orgPdfPath, String outputPdfPath) {
+    public static String addPageNum(String orgPdfPath, String outputPdfPath) {
 
         try (
                 // 输出文件 流
-                FileOutputStream fos = new FileOutputStream(outputPdfPath) ;){
+                FileOutputStream fos = new FileOutputStream(outputPdfPath)) {
 
             // 新建文档，默认A4大小
             Document document = new Document(PageSize.A4);
@@ -55,14 +55,13 @@ public class PdfUtils {
             e.printStackTrace();
         }
 
-        return outputPdfPath ;
+        return outputPdfPath;
     }
 
     public static void main(String[] args) {
-        String orgPdfPath = "E:\\学习\\practice-template\\static\\demo1.pdf" ;
-        String outputPdfPath = "E:\\学习\\practice-template\\static\\demo2.pdf" ;
+        String orgPdfPath = "E:\\学习\\practice-template\\static\\demo1.pdf";
+        String outputPdfPath = "E:\\学习\\practice-template\\static\\demo2.pdf";
         PdfUtils.addPageNum(orgPdfPath, outputPdfPath);
-
     }
 
 }

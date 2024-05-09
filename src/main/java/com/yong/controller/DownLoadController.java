@@ -24,7 +24,7 @@ import java.io.IOException;
 @RestController
 public class DownLoadController {
     @ApiOperation(value = "下载文件模板controller")
-    @GetMapping( value = "v1", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @GetMapping(value = "v1", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void downloadV1(HttpServletResponse response) {
         String demoPath = "static/demo.pdf";
         String filePath = PathUtils.getFileFromWorkDir(demoPath);

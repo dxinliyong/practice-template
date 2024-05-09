@@ -21,6 +21,7 @@ public class StaticFileConfig implements WebMvcConfigurer {
 
     @Autowired
     private Environment environment;
+
     /**
      * 启动时页面重定向到swagger页面
      */
@@ -33,6 +34,7 @@ public class StaticFileConfig implements WebMvcConfigurer {
      * 例如spring.application.name = app
      * 那么映射的路径为 http://127.0.0.1:3030/app/static/demo.pdf 这个时候是http://127.0.0.1:3030/app/static 与 /当前工程路径/static/映射
      * 也就是访问http://127.0.0.1:3030/app/static 等同于访问本地文件文件static 等同于nginx的alias方式
+     *
      * @param registry
      */
     @Override
