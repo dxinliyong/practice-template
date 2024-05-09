@@ -41,6 +41,25 @@
            <groupId>org.springframework.boot</groupId>
            <artifactId>spring-boot-starter-test</artifactId>
        </dependency>
+       <!-- knife4j 文档 -->
+       <dependency>
+           <groupId>com.github.xiaoymin</groupId>
+           <artifactId>knife4j-spring-boot-starter</artifactId>
+           <version>3.0.3</version>
+       </dependency>
+       <dependency>
+           <groupId>com.itextpdf</groupId>
+           <artifactId>itextpdf</artifactId>
+           <version>5.5.13.1</version>
+       </dependency>
+
+       <!-- 解决页码有中文字符时，无法正常显示的问题 -->
+       <dependency>
+           <groupId>com.itextpdf</groupId>
+           <artifactId>itext-asian</artifactId>
+           <version>5.2.0</version>
+       </dependency>
+
    </dependencies>
 
 </project>
