@@ -3,3 +3,13 @@ server:
 spring:
   application:
     name: app
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://111.229.199.181:13306/mall-goods
+    username: root
+    password: njnu@liyong
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: none
+    show-sql: true
