@@ -28,8 +28,10 @@ public class DownLoadController {
     public void downloadV1(HttpServletResponse response) {
         String demoPath = "static/demo.pdf";
         String filePath = PathUtils.getFileFromWorkDir(demoPath);
+        // 可以设置为流
         response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition", "attachment; filename=" + "demo" + ".pdf");
+        // 这里用于描述文件名称
+        response.setHeader("Content-Disposition", "attachment;filename=" + "demo" + ".pdf");
         try (
                 FileInputStream is = new FileInputStream(filePath);
                 ServletOutputStream out = response.getOutputStream()
