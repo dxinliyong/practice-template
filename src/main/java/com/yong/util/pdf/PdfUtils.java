@@ -18,20 +18,16 @@ import java.io.FileOutputStream;
  * @Desc：
  */
 public class PdfUtils {
-
     public static String addPageNum(String orgPdfPath, String outputPdfPath) {
-
         try (
                 // 输出文件 流
                 FileOutputStream fos = new FileOutputStream(outputPdfPath)) {
-
             // 新建文档，默认A4大小
             Document document = new Document(PageSize.A4);
             PdfWriter writer = PdfWriter.getInstance(document, fos);
             // 设置页面监听事件，必须在open方法前
             writer.setPageEvent(new PageNumPdfPageEvent());
             document.open();
-
             // PDF内容体
             PdfContentByte pdfContent = writer.getDirectContent();
             // 读取 源PDF文件，进行一页一页复制，才能触发 添加页码的  页面监听事件
@@ -54,7 +50,6 @@ public class PdfUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return outputPdfPath;
     }
 
