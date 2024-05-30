@@ -12,6 +12,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 /**
  * @Author: liyong
@@ -25,13 +26,16 @@ import java.io.IOException;
 public class DownLoadController {
     @ApiOperation(value = "下载文件模板controller")
     @GetMapping(value = "v1", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public void downloadV1(HttpServletResponse response) {
+    public void downloadV1(HttpServletResponse response) throws UnsupportedEncodingException {
         String demoPath = "static/demo.pdf";
         String filePath = PathUtils.getFileFromWorkDir(demoPath);
         // 可以设置为流
         response.setContentType("application/pdf");
+        String fileName = "demo";
+        // 采用编码的形式 可以支持中文名称
+        String encodeName = java.net.URLEncoder.encode(fileName,"UTF-8");
         // 这里用于描述文件名称
-        response.setHeader("Content-Disposition", "attachment;filename=" + "demo" + ".pdf");
+        response.setHeader("Content-Disposition", "attachment;filename=" + encodeName + ".pdf");
         try (
                 FileInputStream is = new FileInputStream(filePath);
                 ServletOutputStream out = response.getOutputStream()

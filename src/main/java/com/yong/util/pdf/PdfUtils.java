@@ -18,6 +18,12 @@ import java.io.FileOutputStream;
  * @Desc：
  */
 public class PdfUtils {
+    /**
+     * 给pdf 添加编号
+     * @param orgPdfPath
+     * @param outputPdfPath
+     * @return
+     */
     public static String addPageNum(String orgPdfPath, String outputPdfPath) {
         try (
                 // 输出文件 流
@@ -53,10 +59,5 @@ public class PdfUtils {
         return outputPdfPath;
     }
 
-    public static void main(String[] args) {
-        String orgPdfPath = "E:\\学习\\practice-template\\static\\demo1.pdf";
-        String outputPdfPath = "E:\\学习\\practice-template\\static\\demo2.pdf";
-        PdfUtils.addPageNum(orgPdfPath, outputPdfPath);
-    }
 
 }
