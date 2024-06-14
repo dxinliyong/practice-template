@@ -14,4 +14,5 @@ import java.util.Optional;
  */
 
 public interface SpuRepository extends JpaRepository<Spu, String>, JpaSpecificationExecutor<Spu> {
+
 }

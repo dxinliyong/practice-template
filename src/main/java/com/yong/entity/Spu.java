@@ -1,5 +1,6 @@
 package com.yong.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import javax.persistence.Column;
@@ -15,6 +16,7 @@ import java.io.Serializable;
  * @Desc：
  */
 @Table(name="tb_spu")
+@TableName(value = "tb_spu")
 @Entity
 public class Spu implements Serializable {
 

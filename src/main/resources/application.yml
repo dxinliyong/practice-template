@@ -1,15 +1,5 @@
 server:
   port: 3030
 spring:
-  application:
-    name: app
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://ip:13306/mall-goods
-    username: root
-    password: 89377
-  jpa:
-    database: mysql
-    hibernate:
-      ddl-auto: none
-    show-sql: true
+  profiles:
+    active: dev
