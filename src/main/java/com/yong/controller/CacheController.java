@@ -5,6 +5,7 @@ import cn.hutool.http.HttpResponse;
 import cn.hutool.json.JSONUtil;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.yong.dto.CacheRequest;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +19,10 @@ import java.util.Random;
  * @Author: liyong
  * @Date: 2024/6/18 14:13
  * @Email: dixin_liyong@163.com
- * @Desc：
+ * @Desc： 缓存 基本使用模板
  */
 @RestController
+@Api(tags = {"缓存"})
 @RequestMapping("/cache")
 @Slf4j
 public class CacheController {
