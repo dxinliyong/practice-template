@@ -3,11 +3,14 @@ package com.yong.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yong.dao.SpuRepository;
 import com.yong.entity.Spu;
+import com.yong.usemybatis.common.MybatisSpuMapper;
 import com.yong.usemybatis.plus.mapper.SpuMapper;
 import io.swagger.annotations.Api;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -29,13 +32,16 @@ public class QueryController {
     @Autowired
     SpuMapper spuMapper;
 
+    @Autowired
+    MybatisSpuMapper mybatisSpuMapper;
+
     /**
      * jpa 查询
      * @return
      */
 
-    @GetMapping("v1")
-    public Object getResult() {
+    @GetMapping("vJpa")
+    public Object getResultJpa() {
         // 由调用方传递
         // 函数式编程可以看做是代码片段的引用
         // 之可以这样写Specification 其它的方法都有默认的实现
@@ -49,14 +55,24 @@ public class QueryController {
      * mybatis 查询
      * @return
      */
-    @GetMapping("v2")
-    public Object getResultV2() {
+    @GetMapping("vMybatisPlus")
+    public Object getResultMybatisPlus() {
         // mybatis-plus
         QueryWrapper<Spu> queryWrapper = new QueryWrapper<>();
         Spu spu = new Spu();
         spu.setId("10000006409700");
         queryWrapper.setEntity(spu);
         List<Spu> spuList = spuMapper.selectList(queryWrapper);
+        return spuList;
+    }
+
+    /**
+     * mybatis 查询
+     * @return
+     */
+    @GetMapping("vMybatis")
+    public Object getResultMybatis(@RequestParam("id") String id) {
+        List<Spu> spuList = mybatisSpuMapper.selectList(id);
         return spuList;
     }
 }

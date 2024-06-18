@@ -1,5 +1,6 @@
 package com.yong;
 
+import com.yong.usemybatis.common.MybatisSpuMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -16,7 +17,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @EntityScan({"com.yong.entity"})
 @EnableJpaRepositories
-@MapperScan("com.yong.usemybatis.plus.mapper")
+@MapperScan(basePackages = {"com.yong.usemybatis.plus.mapper", "com.yong.usemybatis.common" })
 public class TemplateApplication {
     public static void main(String[] args) {
         new SpringApplication(TemplateApplication.class).run(args);
