@@ -38,6 +38,7 @@ public class CacheConfig {
                 // 最后一次读或写操作后经过指定时间过期
                 .expireAfterAccess(30, TimeUnit.SECONDS)
                 // 监听缓存被移除 是在查询的时候如果过期就移除的策略
+                // removalCause 如果是过期 EXPIRED 如果是 超出缓存大小 SIZE
                 .removalListener((key, val, removalCause) -> {
                     log.info("淘汰当前缓存 key : {} val : {}", key, val);
                     log.info("removalCause : {}", removalCause);
@@ -46,22 +47,5 @@ public class CacheConfig {
                 .recordStats()
                 .build();
         return cache;
-    }
-
-    public static void main(String[] args) {
-        for (int i = 0; i < 100; i ++) {
-            int finalI = i;
-            new Thread(()->{
-                Map<String, String> map = new HashMap<String, String>();
-                map.put("cacheVal", "jjjj");
-                map.put("key", "jjjj" + finalI);
-
-                HttpResponse execute = HttpRequest.post("http://172.16.16.182:3030/cache/putIfAbsent")
-                        .body(JSONUtil.toJsonStr(map))
-                        .header("Content-Type", "application/json;charset=UTF-8")
-                        .execute();
-                System.out.println(execute.body().toString());
-            }).start();
-        }
     }
 }
