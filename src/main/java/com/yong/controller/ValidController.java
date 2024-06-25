@@ -26,6 +26,12 @@ import java.util.stream.Collectors;
  * @Email: dixin_liyong@163.com
  * @Desc：校验模板 例子来源阿里云示例
  * @see <a href="https://mp.weixin.qq.com/s?__biz=MzIzOTU0NTQ0MA==&mid=2247504551&idx=1&sn=82f6899c6db88af1de7f15b6442bb864&chksm=e92aefa8de5d66bea87217a9399450c073bd7944e5833bc0b6955f3c41b05e106ebaa14a57d4&cur_album_id=1391790902901014528&scene=189#wechat_redirect">...</a>
+ * @see <a href="https://blog.csdn.net/qq_32352777/article/details/108424932"></a>
+ */
+
+/**
+ * 分组校验使用场景：
+ *  同一个对象在不同的请求中需要不同的规则进行校验
  */
 
 @Api(tags = {"校验"})

@@ -1,10 +1,10 @@
 package com.yong.exception;
 
 import cn.hutool.core.collection.CollectionUtil;
-import com.yong.base.ErrorCodeEnum;
 import com.yong.base.Result;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.checkerframework.checker.units.qual.N;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -26,12 +26,91 @@ import java.util.Set;
  * @Email: dixin_liyong@163.com
  * @Desc：
  */
+
+@Slf4j
 @RestControllerAdvice(basePackages = {"com.yong.controller"})
 public class GlobalExceptionHandler {
-    @ExceptionHandler(value = {Throwable.class})
-    Object handleException(Throwable e, HttpServletRequest request) {
-        Result result = handleValidException(e);
-        return result;
+
+    /**
+     * 处理业务异常
+     *
+     * @param request 请求参数
+     * @param e       异常
+     * @return Result
+     */
+    @ExceptionHandler(value = BizException.class)
+    public Object bizExceptionHandler(HttpServletRequest request, BizException e) {
+        log.warn("业务异常：" + e.getMessage(), e);
+        return Result.fail(e.getCode(), e.getMessage());
+    }
+
+    /**
+     * 处理系统异常
+     *
+     * @param request 请求参数
+     * @param e       异常
+     * @return Result
+     */
+    @ExceptionHandler(value = SystemException.class)
+    public Object systemExceptionHandler(HttpServletRequest request, SystemException e) {
+        log.error("系统异常：" + e.getMessage(), e);
+        return Result.fail(e.getCode(), e.getMessage());
+    }
+
+    /**
+     * 处理未知异常  兜底处理
+     *
+     * @param request 请求参数
+     * @param e       异常
+     * @return Result
+     */
+    @ExceptionHandler(value = Throwable.class)
+    public Object unknownExceptionHandler(HttpServletRequest request, Throwable e) {
+        log.error("未知异常：" + e.getMessage(), e);
+        return Result.fail(e.getMessage());
+    }
+
+
+    @ExceptionHandler(value = MissingServletRequestParameterException.class)
+    public Object missingServletRequestParameterExceptionHandler(HttpServletRequest request, Throwable e) {
+        String msg = MessageFormat.format("缺少参数{0}", ((MissingServletRequestParameterException) e).getParameterName());
+        log.error("参数校验异常：" + e.getMessage(), e);
+        return Result.fail(msg);
+    }
+
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public Object methodArgumentNotValidExceptionHandler(HttpServletRequest request, Throwable e) {
+        List<ObjectError> errors = ((MethodArgumentNotValidException) e).getBindingResult().getAllErrors();
+        String msg = getValidExceptionMsg(errors);
+        log.error("参数校验异常：" + e.getMessage(), e);
+        return Result.fail(msg);
+    }
+
+    @ExceptionHandler(value = ConstraintViolationException.class)
+    public Object constraintViolationExceptionHandler(HttpServletRequest request, Throwable e) {
+        Set<ConstraintViolation<?>> sets = ((ConstraintViolationException) e).getConstraintViolations();
+        String msg = Strings.EMPTY;
+        if (CollectionUtil.isNotEmpty(sets)) {
+            StringBuilder sb = new StringBuilder();
+            sets.forEach(error -> {
+                if (error instanceof FieldError) {
+                    sb.append(((FieldError) error).getField()).append(":");
+                }
+                sb.append(error.getMessage()).append(";");
+            });
+            msg = sb.toString();
+            msg = StringUtils.substring(msg, 0, msg.length() - 1);
+        }
+        log.error("参数校验异常：" + e.getMessage(), e);
+        return Result.fail(msg);
+    }
+
+    @ExceptionHandler(value = BindException.class)
+    public Object bindExceptionHandler(HttpServletRequest request, Throwable e) {
+        List<ObjectError> errors = ((BindException) e).getBindingResult().getAllErrors();
+        String msg = getValidExceptionMsg(errors);
+        log.error("参数校验异常：" + e.getMessage(), e);
+        return Result.fail(msg);
     }
 
     private String getValidExceptionMsg(List<ObjectError> errors) {
@@ -46,56 +125,6 @@ public class GlobalExceptionHandler {
             String msg = sb.toString();
             msg = StringUtils.substring(msg, 0, msg.length() - 1);
             return msg;
-        }
-        return null;
-    }
-
-    private Result handleValidException(Throwable e) {
-        // 异常处理
-        if (e instanceof MissingServletRequestParameterException) {
-            Result result = Result.buildErrorResult(ErrorCodeEnum.PARAM_ILLEGAL);
-            String msg = MessageFormat.format("缺少参数{0}", ((MissingServletRequestParameterException) e).getParameterName());
-            result.setMessage(msg);
-            return result;
-        }
-        if (e instanceof MethodArgumentNotValidException) {
-            // post请求的对象参数校验异常
-            Result result = Result.buildErrorResult(ErrorCodeEnum.PARAM_ILLEGAL);
-            List<ObjectError> errors = ((MethodArgumentNotValidException) e).getBindingResult().getAllErrors();
-            String msg = getValidExceptionMsg(errors);
-            if (StringUtils.isNotBlank(msg)) {
-                result.setMessage(msg);
-            }
-            return result;
-        }
-        if (e instanceof ConstraintViolationException) {
-            // 单个参数校验异常
-            Result result = Result.buildErrorResult(ErrorCodeEnum.PARAM_ILLEGAL);
-            Set<ConstraintViolation<?>> sets = ((ConstraintViolationException) e).getConstraintViolations();
-            if (CollectionUtil.isNotEmpty(sets)) {
-                StringBuilder sb = new StringBuilder();
-                sets.forEach(error -> {
-                    if (error instanceof FieldError) {
-                        sb.append(((FieldError) error).getField()).append(":");
-                    }
-                    sb.append(error.getMessage()).append(";");
-                });
-                String msg = sb.toString();
-                msg = StringUtils.substring(msg, 0, msg.length() - 1);
-                result.setMessage(msg);
-            }
-            return result;
-        }
-
-        if (e instanceof BindException) {
-            // get请求的对象参数校验异常
-            Result result = Result.buildErrorResult(ErrorCodeEnum.PARAM_ILLEGAL);
-            List<ObjectError> errors = ((BindException) e).getBindingResult().getAllErrors();
-            String msg = getValidExceptionMsg(errors);
-            if (StringUtils.isNotBlank(msg)) {
-                result.setMessage(msg);
-            }
-            return result;
         }
         return null;
     }
