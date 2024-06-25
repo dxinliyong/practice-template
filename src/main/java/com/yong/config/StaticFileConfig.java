@@ -42,6 +42,6 @@ public class StaticFileConfig implements WebMvcConfigurer {
         String envContextPath = environment.getProperty("spring.application.name");
         String localDir = System.getProperty("user.dir") + File.separator + Constant.STATIC_PATH;
         registry.addResourceHandler(String.format("/%s/**", envContextPath))
-                .addResourceLocations("file:" + localDir);
+                .addResourceLocations("fileupload:" + localDir);
     }
 }

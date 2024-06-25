@@ -1,13 +1,4 @@
 package com.yong.util.pdf;
-
-/**
- * @Author: liyong
- * @Date: 2024/5/8 17:49
- * @Email: dixin_liyong@163.com
- * @Desc：
- */
-
-
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
@@ -63,7 +54,6 @@ public class PageNumPdfPageEvent extends PdfPageEventHelper{
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }
 
